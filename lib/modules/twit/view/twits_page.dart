@@ -53,7 +53,7 @@ class _TwitsPageState extends State<TwitsPage> {
             }
             return true;
           },
-          builder: (context, state) => state.when(
+          builder: (context, state) => state.when( 
               initial: () => const Center(child: CircularProgressIndicator()),
               loadedNotEmpty: (twitsBloc) => Column(
                     children: [
@@ -142,8 +142,14 @@ class _TwitsPageState extends State<TwitsPage> {
   Widget show(BuildContext context, Twit twit) {
     return EmojiPicker(
       config: Config(columns: 5),
-      onEmojiSelected: (emoji, category) {
-        twit = twit.copyWith(emoji: category.emoji);
+      onEmojiSelected: (category, emoji) {
+        if (twit.emoji == emoji.emoji) {
+          twit = twit.copyWith(emoji: null);
+        }else {
+         twit = twit.copyWith(emoji: emoji.emoji);
+        }
+        
+        
 
         BlocProvider.of<TwitBloc>(context).add(TwitEvent.update(twit: twit));
         setState(() {});
